@@ -1,0 +1,34 @@
+{
+  "name": "greezlu/ws-router",
+  "description": "Routing System",
+  "type": "project",
+  "license": "MIT",
+  "homepage": "https://github.com/greezlu/ws-router",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "greezlu",
+      "email": "greezlu@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "~7.4.0",
+    "greezlu/ws-filesystem": "*",
+    "greezlu/ws-logger": "*",
+    "greezlu/ws-exception": "*"
+  },
+  "keywords": [
+    "php",
+    "router",
+    "routing"
+  ],
+  "autoload": {
+    "psr-4": {
+      "WebServer\\Abstracts\\": "src/Abstracts",
+      "WebServer\\Controllers\\": "src/Controllers",
+      "WebServer\\Core\\": "src/Core",
+      "WebServer\\Interfaces\\": "src/Interfaces",
+      "WebServer\\Result\\": "src/Result"
+    }
+  }
+}
