@@ -67,14 +67,14 @@ class Page implements ResultInterface
         $this->fileManager = new FileManager();
         $this->adminFileManager = new AdminFileManager();
 
-        $templateFilePath = $this->adminFileManager->setWorkingDir(static::TEMPLATE_FOLDER . $template . '.php');
+        $templateFilePath = $this->adminFileManager->getFullPath(static::TEMPLATE_FOLDER . $template . '.php');
         if ($this->adminFileManager->isFile($templateFilePath)) {
             $this->template = $templateFilePath;
         } else {
             throw new LocalizedException('Undefined template file: ' . $templateFilePath);
         }
 
-        $contentFilePath = $this->adminFileManager->setWorkingDir(static::CONTENT_FOLDER . $content . '.php');
+        $contentFilePath = $this->adminFileManager->getFullPath(static::CONTENT_FOLDER . $content . '.php');
         if ($this->adminFileManager->isFile($contentFilePath)) {
             $this->content = $contentFilePath;
         } else {
@@ -167,7 +167,7 @@ class Page implements ResultInterface
 
         extract($this->params);
 
-        include $this->adminFileManager->setWorkingDir($this->template);
+        include $this->adminFileManager->getFullPath($this->template);
     }
 
     /**
@@ -184,6 +184,6 @@ class Page implements ResultInterface
 
         extract($this->params);
 
-        include $this->adminFileManager->setWorkingDir($this->content);
+        include $this->adminFileManager->getFullPath($this->content);
     }
 }
