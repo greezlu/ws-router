@@ -37,12 +37,7 @@ class FrontController
             ? addslashes($uriComponents[0])
             : 'index';
 
-        $baseController     = '\\Controllers\\' . ucfirst($controllerName) . 'Controller';
-        $sourceController   = '\\WebServer\\Controllers\\' . ucfirst($controllerName) . 'Controller';
-
-        return !class_exists($baseController) && class_exists($sourceController)
-            ? $sourceController
-            : $baseController;
+        return '\\WebServer\\Controllers\\' . ucfirst($controllerName) . 'Controller';
     }
 
     /**
@@ -53,6 +48,13 @@ class FrontController
     public function getActionName(): string
     {
         $uriComponents = $this->request->url;
+
+        if (isset($uriComponents[0])
+            && (strtolower($uriComponents[0]) === 'static'
+                || strtolower($uriComponents[0]) === 'pub')
+        ) {
+            return 'index';
+        }
 
         if (isset($uriComponents[1])) {
             return addslashes($uriComponents[1]);

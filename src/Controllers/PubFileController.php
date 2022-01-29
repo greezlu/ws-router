@@ -15,25 +15,25 @@ use WebServer\Exceptions\LocalizedException;
 /**
  * @package greezlu/ws-router
  */
-class FileController extends ControllerAbstract
+class PubFileController extends ControllerAbstract
 {
     /**
      * @return File|Page
      */
     public function index(): ResultInterface
     {
-        $fileManager = new PubFileManager();
-
-        $filePath = $this->request->postParams['file_path']
-            ?? $fileManager->isFile(implode('/', $this->request->url))
-                ? implode('/', $this->request->url)
-                : null;
-
-        if (is_null($filePath)) {
+        if ($this->request->method !== 'GET') {
             return $this->forward404();
         }
 
-        $fileName = pathinfo($filePath, PATHINFO_BASENAME);
+        $pubFileManager = new PubFileManager();
+
+        $uriComponents = array_splice($this->request->url, 1);
+        $filePath = implode('/', $uriComponents);
+
+        if (!$pubFileManager->isFile($filePath)) {
+            return $this->forward404();
+        }
 
         try {
             $file = new File($filePath);
@@ -41,7 +41,10 @@ class FileController extends ControllerAbstract
             return $this->forward404();
         }
 
+        $fileName = pathinfo($filePath, PATHINFO_BASENAME);
+
         header("Content-Disposition: attachment; filename=\"$fileName\"");
+
         return $file;
     }
 }

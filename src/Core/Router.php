@@ -20,17 +20,11 @@ class Router
     {
         $request            = new Request();
         $frontController    = new FrontController($request);
-        $fileManager        = new PubFileManager();
 
         $controllerName = $frontController->getControllerName();
         $actionName     = $frontController->getActionName();
 
-        if (!method_exists($controllerName, $actionName)
-            && $fileManager->isFile(implode('/', $request->url))
-        ) {
-            $controllerName = FileController::class;
-            $actionName     = 'index';
-        } else if (!method_exists($controllerName, $actionName)) {
+        if (!method_exists($controllerName, $actionName)) {
             $controllerName = ErrorController::class;
             $actionName     = 'error404';
         }

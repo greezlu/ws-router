@@ -114,7 +114,7 @@ class Page implements ResultInterface
         $filePath = static::CSS_FOLDER . '/' . $cssFile . '.css';
 
         if ($this->staticFileManager->isFile($filePath)) {
-            $this->params['cssList'][] = $filePath;
+            $this->params['cssList'][] = $this->staticFileManager->getPublicPath($filePath);
         }
 
         return $this;
@@ -131,7 +131,7 @@ class Page implements ResultInterface
         $filePath = static::SCRIPT_FOLDER . '/' . $scriptFile . '.js';
 
         if ($this->staticFileManager->isFile($filePath)) {
-            $this->params['scriptList'][] = $filePath;
+            $this->params['scriptList'][] = $this->staticFileManager->getPublicPath($filePath);
         }
 
         return $this;
