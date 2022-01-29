@@ -6,6 +6,8 @@ declare(strict_types = 1);
 namespace WebServer\Core;
 
 use WebServer\Controllers\ErrorController;
+use WebServer\Filesystem\PubFileManager;
+use WebServer\Controllers\FileController;
 use WebServer\Interfaces\ControllerInterface;
 use WebServer\Interfaces\ResultInterface;
 
@@ -18,11 +20,17 @@ class Router
     {
         $request            = new Request();
         $frontController    = new FrontController($request);
+        $fileManager        = new PubFileManager();
 
         $controllerName = $frontController->getControllerName();
         $actionName     = $frontController->getActionName();
 
-        if (!method_exists($controllerName, $actionName)) {
+        if (!method_exists($controllerName, $actionName)
+            && $fileManager->isFile(implode('/', $request->url))
+        ) {
+            $controllerName = FileController::class;
+            $actionName     = 'index';
+        } else if (!method_exists($controllerName, $actionName)) {
             $controllerName = ErrorController::class;
             $actionName     = 'error404';
         }

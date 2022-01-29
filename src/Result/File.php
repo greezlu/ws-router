@@ -6,7 +6,7 @@ declare(strict_types = 1);
 namespace WebServer\Result;
 
 use WebServer\Exceptions\LocalizedException;
-use WebServer\Filesystem\FileManager;
+use WebServer\Filesystem\PubFileManager;
 use WebServer\Interfaces\ResultInterface;
 
 /**
@@ -14,17 +14,15 @@ use WebServer\Interfaces\ResultInterface;
  */
 class File implements ResultInterface
 {
-    protected const FILE_DIRECTORY = 'files';
-
     /**
      * @var string
      */
     private string $filePath;
 
     /**
-     * @var FileManager
+     * @var PubFileManager
      */
-    private FileManager $fileManager;
+    private PubFileManager $pubFileManager;
 
     /**
      * @param string $filePath
@@ -33,7 +31,12 @@ class File implements ResultInterface
     public function __construct(
         string $filePath
     ) {
-        $this->fileManager = new FileManager();
+        $this->pubFileManager = new PubFileManager();
+
+        if (!$this->pubFileManager->isFile($filePath)) {
+            throw new LocalizedException('Unable to find file: '. $filePath);
+        }
+
         $this->filePath = $filePath;
     }
 
@@ -43,10 +46,10 @@ class File implements ResultInterface
      */
     public function execute(): void
     {
-        $filePath = static::FILE_DIRECTORY  . '/' . $this->filePath;
+        $filePath = $this->filePath;
 
-        if ($this->fileManager->isFile($filePath)) {
-            $this->fileManager->openFile($filePath);
+        if ($this->pubFileManager->isFile($filePath)) {
+            $this->pubFileManager->openFile($filePath);
         } else {
             throw new LocalizedException('Unable to locate file: ' . $filePath);
         }

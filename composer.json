@@ -24,11 +24,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "WebServer\\Abstracts\\": "src/Abstracts",
-      "WebServer\\Controllers\\": "src/Controllers",
-      "WebServer\\Core\\": "src/Core",
-      "WebServer\\Interfaces\\": "src/Interfaces",
-      "WebServer\\Result\\": "src/Result"
+      "WebServer\\": "src"
     }
   }
 }

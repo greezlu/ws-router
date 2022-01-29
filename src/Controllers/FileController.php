@@ -3,9 +3,10 @@
 
 declare(strict_types = 1);
 
-namespace WebServer\Greezlu\Controllers;
+namespace WebServer\Controllers;
 
 use WebServer\Abstracts\ControllerAbstract;
+use WebServer\Filesystem\PubFileManager;
 use WebServer\Interfaces\ResultInterface;
 use WebServer\Result\File;
 use WebServer\Result\Page;
@@ -21,7 +22,12 @@ class FileController extends ControllerAbstract
      */
     public function index(): ResultInterface
     {
-        $filePath = $this->request->postParams['file_path'] ?? null;
+        $fileManager = new PubFileManager();
+
+        $filePath = $this->request->postParams['file_path']
+            ?? $fileManager->isFile(implode('/', $this->request->url))
+                ? implode('/', $this->request->url)
+                : null;
 
         if (is_null($filePath)) {
             return $this->forward404();

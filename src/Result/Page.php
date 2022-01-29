@@ -8,7 +8,7 @@ namespace WebServer\Result;
 use WebServer\Interfaces\ResultInterface;
 use WebServer\Core\Config;
 use WebServer\Exceptions\LocalizedException;
-use WebServer\Filesystem\FileManager;
+use WebServer\Filesystem\StaticFileManager;
 use WebServer\Filesystem\AdminFileManager;
 
 /**
@@ -16,15 +16,15 @@ use WebServer\Filesystem\AdminFileManager;
  */
 class Page implements ResultInterface
 {
-    protected const TEMPLATE_FOLDER     = '../view/template/';
+    protected const TEMPLATE_FOLDER     = 'view/template';
 
-    protected const CONTENT_FOLDER      = '../view/content/';
+    protected const CONTENT_FOLDER      = 'view/content';
 
-    protected const CSS_FOLDER          = '/static/css/';
+    protected const CSS_FOLDER          = 'css';
 
-    protected const SCRIPT_FOLDER       = '/static/js/';
+    protected const SCRIPT_FOLDER       = 'js';
 
-    protected const IMAGE_FOLDER        = '/static/images/';
+    protected const IMAGE_FOLDER        = 'images';
 
     /**
      * @var string
@@ -42,9 +42,9 @@ class Page implements ResultInterface
     private array $params;
 
     /**
-     * @var FileManager
+     * @var StaticFileManager
      */
-    private FileManager $fileManager;
+    private StaticFileManager $staticFileManager;
 
     /**
      * @var AdminFileManager
@@ -64,17 +64,21 @@ class Page implements ResultInterface
         array $data = [],
         string $title = null
     ) {
-        $this->fileManager = new FileManager();
+        $this->staticFileManager = new StaticFileManager();
         $this->adminFileManager = new AdminFileManager();
 
-        $templateFilePath = $this->adminFileManager->getFullPath(static::TEMPLATE_FOLDER . $template . '.php');
+        $templateFilePath = $this->adminFileManager->getFullPath(
+            static::TEMPLATE_FOLDER . '/' . $template . '.php'
+        );
         if ($this->adminFileManager->isFile($templateFilePath)) {
             $this->template = $templateFilePath;
         } else {
             throw new LocalizedException('Undefined template file: ' . $templateFilePath);
         }
 
-        $contentFilePath = $this->adminFileManager->getFullPath(static::CONTENT_FOLDER . $content . '.php');
+        $contentFilePath = $this->adminFileManager->getFullPath(
+            static::CONTENT_FOLDER . '/' . $content . '.php'
+        );
         if ($this->adminFileManager->isFile($contentFilePath)) {
             $this->content = $contentFilePath;
         } else {
@@ -107,9 +111,9 @@ class Page implements ResultInterface
      */
     public function addCssFile(string $cssFile): Page
     {
-        $filePath = static::CSS_FOLDER . $cssFile . '.css';
+        $filePath = static::CSS_FOLDER . '/' . $cssFile . '.css';
 
-        if ($this->fileManager->isFile($filePath)) {
+        if ($this->staticFileManager->isFile($filePath)) {
             $this->params['cssList'][] = $filePath;
         }
 
@@ -124,9 +128,9 @@ class Page implements ResultInterface
      */
     public function addScriptFile(string $scriptFile): Page
     {
-        $filePath = static::SCRIPT_FOLDER . $scriptFile . '.js';
+        $filePath = static::SCRIPT_FOLDER . '/' . $scriptFile . '.js';
 
-        if ($this->fileManager->isFile($filePath)) {
+        if ($this->staticFileManager->isFile($filePath)) {
             $this->params['scriptList'][] = $filePath;
         }
 

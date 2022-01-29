@@ -15,7 +15,7 @@ class ErrorController extends ControllerAbstract
 {
     protected const TEMPLATE_FILE = 'main';
 
-    protected const CONTENT_FILE = 'error/';
+    protected const CONTENT_FILE = 'error';
 
     /**
      * Get error 404 page.
@@ -27,7 +27,7 @@ class ErrorController extends ControllerAbstract
         try {
             $page = new Page(
                 static::TEMPLATE_FILE,
-                static::CONTENT_FILE . __FUNCTION__
+                static::CONTENT_FILE . '/' . __FUNCTION__
             );
             http_response_code(404);
             return $page;
@@ -48,7 +48,7 @@ class ErrorController extends ControllerAbstract
         try {
             return new Page(
                 static::TEMPLATE_FILE,
-                static::CONTENT_FILE . __FUNCTION__
+                static::CONTENT_FILE . '/' . __FUNCTION__
             );
         } catch (\Exception $error) {
             exit();
