@@ -6,8 +6,6 @@ declare(strict_types = 1);
 namespace WebServer\Core;
 
 use WebServer\Controllers\ErrorController;
-use WebServer\Filesystem\PubFileManager;
-use WebServer\Controllers\FileController;
 use WebServer\Interfaces\ControllerInterface;
 use WebServer\Interfaces\ResultInterface;
 
