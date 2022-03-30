@@ -66,7 +66,6 @@ class Request
     protected function getRequestUrl(): array
     {
         $url = parse_url(filter_input(INPUT_SERVER, 'REQUEST_URI') ?: '/')['path'];
-        $url = strtolower($url);
         $url = trim($url, '/');
 
         return explode('/', $url) ?: [];
