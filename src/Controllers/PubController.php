@@ -15,7 +15,7 @@ use WebServer\Exceptions\LocalizedException;
 /**
  * @package greezlu/ws-router
  */
-class PubFileController extends ControllerAbstract
+class PubController extends ControllerAbstract
 {
     /**
      * @return File|Page
