@@ -114,6 +114,6 @@ class Request
             ? $postParamsMethod
             : filter_input(INPUT_SERVER, 'REQUEST_METHOD');
 
-        return filter_input(INPUT_SERVER, 'REQUEST_METHOD') ?: static::METHOD_LIST[0];
+        return $method ?: static::METHOD_LIST[0];
     }
 }
